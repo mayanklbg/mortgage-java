@@ -42,12 +42,7 @@ jobs:
         gcr_host: eu.gcr.io
         gcr_project_id: playpen-yggfkz
         gcr_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
-    # - name: Push to Artifactory
-    #   run: docker images
-#       uses: docker/build-push-action@v2
-#       with:
-#         push: FALSE
-#         tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest
+
   
   
 
