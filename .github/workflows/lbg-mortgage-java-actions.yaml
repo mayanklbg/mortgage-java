@@ -4,7 +4,7 @@ name: PE SpringBoot Application
 env:
   name: Sample springboot application
   namespace: statestreet_mortgage
-
+  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_SECRET }}'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,20 +21,21 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
-    - name: 'Hello World'
-      description: 'Greet someone and record the time'
-      inputs:
-        who-to-greet:  # id of input
-          description: 'Who to greet'
-          required: true
-          default: 'World'
-      outputs:
-        time: # id of output
-          description: 'The time we greeted you'
-      runs:
-        using: 'docker'
-        image: 'Dockerfile'
-        args:
-          - ${{ inputs.who-to-greet }}
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_SECRET }}'
+        
+    - name: Upload to Artifact Registry
+      run: |
+        gcloud config set artifacts/repository foo
+        gcloud config set artifacts/location us-central1
+        gcloud config set account github-gcr-service-account@norrin-radd.iam.gserviceaccount.com
+      
+        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=norrin-radd'
+    
+    
+
 
 
