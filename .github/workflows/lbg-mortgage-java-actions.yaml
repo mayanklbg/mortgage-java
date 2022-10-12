@@ -4,7 +4,7 @@ name: PE SpringBoot Application
 env:
   name: Sample springboot application
   namespace: statestreet_mortgage
-  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_SECRET }}'
+  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,26 +14,18 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0'
       with:
-        credentials_json: '${{ secrets.GCP_SECRET }}'
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
     - name: Activate Service Account
       run: |
-        gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
-        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
+        gcloud config set account shared-k8s@shared-svc1-project.iam.gserviceaccount.com
+        gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=shared-svc-project-01
 
-    - name: GET IAM POLICY
+    - name: Create Namespace
       run: |
         curl -X POST \
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-        -H "Content-Type: application/json; charset=utf-8" \
-        -d '{"options":{"requestedPolicyVersion":3}}' \
-        "https://iam.googleapis.com/v1/projects/playpen-yggfkz/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:getIamPolicy"
+        -H "Content-Type: application/json" \
+        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"shared-test"}}' \
+        "https://35.189.222.183/api/v1/namespaces"
 
 
-    - name: GKE Job
-      run: |
-        curl -X POST \
-        -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-        -H "Content-Type: application/json; charset=utf-8" \
-        -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"],"lifetime":"600s"}' \
-        "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:generateAccessToken"
-        
