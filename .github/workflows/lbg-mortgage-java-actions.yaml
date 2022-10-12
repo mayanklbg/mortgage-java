@@ -4,6 +4,7 @@ name: PE SpringBoot Application
 env:
   name: Sample springboot application
   namespace: statestreet_mortgage
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,3 +21,20 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+    - name: 'Hello World'
+      description: 'Greet someone and record the time'
+      inputs:
+        who-to-greet:  # id of input
+          description: 'Who to greet'
+          required: true
+          default: 'World'
+      outputs:
+        time: # id of output
+          description: 'The time we greeted you'
+      runs:
+        using: 'docker'
+        image: 'Dockerfile'
+        args:
+          - ${{ inputs.who-to-greet }}
+
+
