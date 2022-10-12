@@ -34,10 +34,11 @@ jobs:
         gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
         
     - name: Push to Artifactory
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest
+      run: |
+        gcloud auth configure-docker europe-docker.pkg.dev
+        docker build -t eu.gcr.io/playpen-yggfkz/java-hello-app:latest .
+        docker push eu.gcr.io/playpen-yggfkz/java-hello-app:latest
+        
 
   
   
