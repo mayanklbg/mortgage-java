@@ -33,16 +33,11 @@ jobs:
         gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
         gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
         
-    - name: push to artifactory
-      uses: kurkop/push-docker-gcr@v1.2.2
+    - name: Push to Artifactory
+      uses: docker/build-push-action@v2
       with:
         push: true
-        docker_image_name: api
-        docker_image_tag: latest
-        docker_context: ./
-        gcr_host: eu.gcr.io
-        gcr_project_id: playpen-yggfkz
-        gcr_service_key: ${{ secrets.GCP_SECRET }}
+        tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest
 
   
   
