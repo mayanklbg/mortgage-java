@@ -21,10 +21,6 @@ jobs:
     - name: Run build with Gradle Wrapper
       run: |
         ./gradlew build
-        ls
-        cd build/libs/
-        ls
-        pwd
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0'
@@ -42,7 +38,7 @@ jobs:
       with:
         version: v0.7.0
     - name: Push to Artifactory
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v2
       with:
         push: true
         tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest 
