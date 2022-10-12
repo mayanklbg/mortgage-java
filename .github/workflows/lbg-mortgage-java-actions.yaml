@@ -15,13 +15,23 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCP_SECRET }}'
-        
+    - name: Activate Service Account
+      run: |
+        gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
+        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
+
+    - name: GET IAM POLICY
+      run: |
+        curl -X POST \        
+        -H "Authorization: Bearer $(gcloud auth print-access-token)" \         
+        -H "Content-Type: application/json; charset=utf-8" \         
+        -d '{"options":{"requestedPolicyVersion":3}}' \                                                                            
+        "https://iam.googleapis.com/v1/projects/playpen-yggfkz/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:getIamPolicy"
     - name: GKE Job
       run: |
-        curl \
-          -X POST \
-          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-          -H "Content-Type: application/json; charset=utf-8" \
-          -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"],"lifetime":"6000s"}' \
-          "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:generateAccessToken"
+        curl -X POST \
+            -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"],"lifetime":"6000s"}' \
+            "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:generateAccessToken"
         
