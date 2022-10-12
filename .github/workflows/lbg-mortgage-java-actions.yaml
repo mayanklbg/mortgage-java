@@ -36,6 +36,7 @@ jobs:
     - name: push to artifactory
       uses: kurkop/push-docker-gcr@v1.2.2
       with:
+        push: true
         docker_image_name: api
         docker_image_tag: latest
         docker_context: ./
