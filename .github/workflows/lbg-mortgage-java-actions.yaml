@@ -22,6 +22,8 @@ jobs:
       run: |
         ./gradlew build
         ls
+        cd build/
+        ls
         pwd
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
