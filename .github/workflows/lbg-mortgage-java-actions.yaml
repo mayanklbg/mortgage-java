@@ -41,7 +41,11 @@ jobs:
       uses: docker/setup-buildx-action@v1
       with:
         version: v0.7.0
-
-
+    - name: Push to Artifactory
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest 
+  
 
 
