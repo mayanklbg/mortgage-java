@@ -34,7 +34,7 @@ jobs:
         gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
         
     - name: push to artifactory
-      uses: Industrial/push-docker-gcr@v1
+      uses: kurkop/push-docker-gcr@v1.2.2
       with:
         docker_image_name: api
         docker_image_tag: latest
