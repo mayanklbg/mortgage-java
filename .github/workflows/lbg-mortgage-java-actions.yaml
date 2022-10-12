@@ -35,7 +35,7 @@ jobs:
         
     - name: Push to Artifactory
       run: |
-        gcloud auth configure-docker europe-docker.pkg.dev
+        gcloud auth configure-docker
         docker build -t eu.gcr.io/playpen-yggfkz/java-hello-app:latest .
         docker push eu.gcr.io/playpen-yggfkz/java-hello-app:latest
         
