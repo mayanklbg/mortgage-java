@@ -40,6 +40,7 @@ jobs:
     - name: Build image and push
       uses: docker/build-push-action@v3
       with:
+        version: v0.7.0
         push: true
         tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest 
 
