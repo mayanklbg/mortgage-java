@@ -41,7 +41,7 @@ jobs:
         docker_context: ./
         gcr_host: eu.gcr.io
         gcr_project_id: playpen-yggfkz
-        gcr_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+        gcr_service_key: ${{ secrets.GCP_SECRET }}
 
   
   
