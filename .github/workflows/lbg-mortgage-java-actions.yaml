@@ -4,7 +4,7 @@ name: PE SpringBoot Application
 env:
   name: Sample springboot application
   namespace: statestreet_mortgage
-  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
+  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_SECRET }}'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,11 +14,11 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0'
       with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+        credentials_json: '${{ secrets.GCP_SECRET }}'
     - name: Activate Service Account
       run: |
-        gcloud config set account shared-k8s@shared-svc1-project.iam.gserviceaccount.com
-        gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=shared-svc-project-01
+        gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
+        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
 
     - name: Create Namespace
       run: |
@@ -27,6 +27,6 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"shared-test"}}' \
         --insecure \
-        "https://35.189.222.183/api/v1/namespaces"
+        "https://34.79.25.55/api/v1/namespaces"
 
 
