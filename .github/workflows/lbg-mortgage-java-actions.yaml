@@ -31,9 +31,9 @@ jobs:
       run: |
         gcloud config set artifacts/repository europe-docker.pkg.dev/playpen-yggfkz/eu.gcr.io
         gcloud config set artifacts/location eu-central1
-        gcloud config set account github-gcr-service-account@norrin-radd.iam.gserviceaccount.com
+        gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
       
-        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=norrin-radd'
+        gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
     
     
 
