@@ -26,16 +26,18 @@ jobs:
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCP_SECRET }}'
-        
-    - name: Upload to Artifact Registry
+    - name: Connect to Artifact Registry
       run: |
         gcloud config set artifacts/repository europe-docker.pkg.dev/playpen-yggfkz/eu.gcr.io
         gcloud config set artifacts/location eu-central1
         gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
-      
         gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
     
-    
+    - name: Build image and push
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: eu.gcr.io/playpen-yggfkz/java-hello-app:latest 
 
 
 
