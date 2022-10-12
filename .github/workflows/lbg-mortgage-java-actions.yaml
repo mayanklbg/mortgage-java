@@ -26,7 +26,7 @@ jobs:
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
         -H "Content-Type: application/json" \
         -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"shared-test"}}' \
-        --insecure-skip-tls-verify \
+        --insecure \
         "https://35.189.222.183/api/v1/namespaces"
 
 
