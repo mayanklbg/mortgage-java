@@ -20,8 +20,8 @@ jobs:
       run: |
         curl \
           -X POST \
-          - H "Authorization: Bearer $(gcloud auth print-access-token)" \
-          - H "Content-Type: application/json; charset=utf-8" \
+          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+          -H "Content-Type: application/json; charset=utf-8" \
           -d '{"scope":["https://www.googleapis.com/auth/cloud-platform"],"lifetime":"6000s"}' \
           "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com:generateAccessToken"
         
