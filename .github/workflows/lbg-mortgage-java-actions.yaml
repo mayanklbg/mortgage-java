@@ -28,7 +28,7 @@ jobs:
         credentials_json: '${{ secrets.GCP_SECRET }}'
     - name: Connect to Artifact Registry
       run: |
-        gcloud config set artifacts/repository europe-docker.pkg.dev/playpen-yggfkz/eu.gcr.io
+        gcloud config set artifacts/repository eu.gcr.io/playpen-yggfkz
         gcloud config set artifacts/location eu-central1
         gcloud config set account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com
         gcloud auth activate-service-account playpen-yggfkz-sa@playpen-yggfkz.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=playpen-yggfkz
