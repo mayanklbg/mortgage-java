@@ -2,7 +2,7 @@ name: PE SpringBoot Application
 'on':
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
     inputs: 
       Name: 
