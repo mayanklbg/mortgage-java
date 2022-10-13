@@ -1,10 +1,19 @@
 name: PE SpringBoot Application
 'on':
-- push
+  push:
+  workflow_dispatch:
+    inputs: 
+        value:
+          required: true
+          type: string
 env:
   name: Sample springboot application
-  namespace: statestreet_mortgage
   GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
+  PROJECT_ID: "shared-svc1-project"
+  CLUSTER_NAME: "pde-gke"
+  ZONE: "europe-west1"
+  NAMESPACE: "sts-investment"
+  CLUSTER_IP: 35.189.222.183
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,21 +27,21 @@ jobs:
     - name: Activate Service Account
       run: |
         gcloud config set account shared-k8s@shared-svc1-project.iam.gserviceaccount.com
-        gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=shared-svc1-project
+        gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
 
     - name: Create Namespace
       run: |
         curl -X POST \
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
         -H "Content-Type: application/json" \
-        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"mortgage-shared1"}}' \
+        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":$NAMESPACE"}}' \
         --insecure \
-        "https://35.189.222.183/api/v1/namespaces"
+        "https://$CLUSTER_IP/api/v1/namespaces"
  
     - name: Create KSA
       run: |
-        gcloud container clusters get-credentials pde-gke --zone=europe-west1
-        kubectl create serviceaccount ksa-mortgage-shared --namespace mortgage-shared1 --insecure-skip-tls-verify
-        gcloud projects add-iam-policy-binding shared-svc1-project --member "serviceAccount:shared-test-sa@shared-svc1-project.iam.gserviceaccount.com" --role "roles/spanner.viewer"
-        kubectl annotate serviceaccount ksa-mortgage-shared --namespace mortgage-shared1 iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
+        gcloud container clusters get-credentials pde-gke --zone=$ZONE
+        kubectl create serviceaccount ksa-$NAMESPACE --namespace $NAMESPACE --insecure-skip-tls-verify
+        gcloud projects add-iam-policy-binding $PROJECT_ID --member "serviceAccount:shared-test-sa@shared-svc1-project.iam.gserviceaccount.com" --role "roles/spanner.viewer"
+        kubectl annotate serviceaccount ksa-$NAMESPACE --namespace $NAMESPACE  iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
 
