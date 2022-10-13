@@ -21,6 +21,7 @@ env:
   CLUSTER_NAME: "pde-gke"
   ZONE: "europe-west1"
   CLUSTER_IP: 35.189.222.183
+  USER_GKE_GSA: shared-test-sa@shared-svc1-project.iam.gserviceaccount.com
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -49,13 +50,15 @@ jobs:
       run: |
         gcloud container clusters get-credentials pde-gke --zone=$ZONE
         kubectl create serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }} --insecure-skip-tls-verify
-        gcloud projects add-iam-policy-binding $PROJECT_ID --member "serviceAccount:shared-test-sa@shared-svc1-project.iam.gserviceaccount.com" --role "roles/spanner.viewer"
-        kubectl annotate serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }}  iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
+        gcloud projects add-iam-policy-binding $PROJECT_ID --member "serviceAccount:$USER_GKE_GSA" --role "roles/spanner.viewer"
+        kubectl annotate serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }}  iam.gke.io/gcp-service-account=$USER_GKE_GSA --insecure-skip-tls-verify
       # continue-on-error: false
     - name: Dump steps context
       env:
         STEPS_CONTEXT: ${{ toJson(steps) }}
       run: echo "$STEPS_CONTEXT"
-    - name: Check on failures
-      if: steps.create_ns.outputs.status == 'failure' || steps.world.create_ksa.status == 'failure'
-      run: exit 1
+    - name: Check on success
+      if: steps.create_ns.outputs.status != 'failure' || steps.world.create_ksa.status != 'failure'
+      run: |
+        output=echo $(python 3 handle-response.py "$CLUSTER_NAME" "${{ github.event.inputs.Name }}" "$ZONE" "$USER_GKE_GSA")
+        echo '::set-output name=output'
