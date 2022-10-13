@@ -32,7 +32,7 @@ jobs:
     - name: Create KSA
       run: |
         gcloud container clusters get-credentials pde-gke --zone=europe-west1
-        kubectl create serviceaccount ksa-mortgage-shared-05 --namespace mortgage-shared --insecure-skip-tls-verify
+        kubectl create serviceaccount ksa-mortgage-shared-06 --namespace mortgage-shared --insecure-skip-tls-verify
         gcloud projects add-iam-policy-binding shared-svc1-project --member "serviceAccount:shared-test-sa@shared-svc1-project.iam.gserviceaccount.com" --role "roles/spanner.viewer"
         kubectl annotate serviceaccount ksa-mortgage-shared --namespace mortgage-shared iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
 
