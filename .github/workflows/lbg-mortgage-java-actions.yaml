@@ -23,7 +23,6 @@ env:
   PROJECT_ID: "shared-svc1-project"
   CLUSTER_NAME: "pde-gke"
   ZONE: "europe-west1"
-  NAMESPACE: "sts-investment"
   CLUSTER_IP: 35.189.222.183
 jobs:
   build:
@@ -44,7 +43,7 @@ jobs:
         curl -X POST \
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
         -H "Content-Type: application/json" \
-        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"sts-investment"}}' \
+        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"${{ github.event.inputs.Name }}"}' \
         --insecure \
         "https://$CLUSTER_IP/api/v1/namespaces"
  
