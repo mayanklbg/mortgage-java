@@ -4,6 +4,16 @@ name: PE SpringBoot Application
   workflow_dispatch:
     inputs: 
         value:
+        Name: 
+          required: true
+          type: string
+        CostCentre: 
+          required: true
+          type: string
+        CloudPlatform: 
+          required: true
+          type: string
+        AADGroupid: 
           required: true
           type: string
 env:
@@ -20,7 +30,7 @@ jobs:
     steps:
     - id: set_var
       run: |
-        content="${{ github.event.inputs.value }}"
+        content="${{ github.event.inputs.value.Name }}"
         # the following lines are only required for multi line json
         content="${content//'%'/'%25'}"
         content="${content//$'\n'/'%0A'}"
