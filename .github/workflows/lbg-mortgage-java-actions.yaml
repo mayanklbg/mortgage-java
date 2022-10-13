@@ -36,6 +36,7 @@ jobs:
         gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
 
     - name: Create Namespace
+      id: create_ns
       run: |
         echo "${{ github.event.inputs.Name }}"
         curl -X POST \
@@ -44,9 +45,17 @@ jobs:
         -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"${{ github.event.inputs.Name }}"}}' --insecure "https://$CLUSTER_IP/api/v1/namespaces"
       continue-on-error: false
     - name: Create KSA
+      id: create_ksa
       run: |
         gcloud container clusters get-credentials pde-gke --zone=$ZONE
         kubectl create serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }} --insecure-skip-tls-verify
         gcloud projects add-iam-policy-binding $PROJECT_ID --member "serviceAccount:shared-test-sa@shared-svc1-project.iam.gserviceaccount.com" --role "roles/spanner.viewer"
         kubectl annotate serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }}  iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
       continue-on-error: false
+    - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Check on failures
+        if: steps.create_ns.outputs.status == 'failure' || steps.world.create_ksa.status == 'failure'
+        run: exit 1
