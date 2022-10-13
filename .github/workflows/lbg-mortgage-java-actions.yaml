@@ -3,7 +3,6 @@ name: PE SpringBoot Application
   push:
   workflow_dispatch:
     inputs: 
-        value:
         Name: 
           required: true
           type: string
