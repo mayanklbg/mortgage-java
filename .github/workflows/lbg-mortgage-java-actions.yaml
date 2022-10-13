@@ -40,10 +40,11 @@ jobs:
 
     - name: Create Namespace
       run: |
+        echo "${{ github.event.inputs.Name }}"
         curl -X POST \
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
         -H "Content-Type: application/json" \
-        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"${{ github.event.inputs.Name }}"}' \
+        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":${{ github.event.inputs.Name }}}' \
         --insecure \
         "https://$CLUSTER_IP/api/v1/namespaces"
  
