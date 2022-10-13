@@ -29,6 +29,11 @@ jobs:
         --insecure \
         "https://35.189.222.183/api/v1/namespaces"
 
+    - name: Enable 
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GH_MORTGAGE_SA_SECRET }}'
+ 
     - name: Create KSA
       run: |
         gcloud container clusters get-credentials pde-gke --zone=europe-west1
