@@ -1,5 +1,8 @@
 name: PE SpringBoot Application
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs: 
       Name: 
