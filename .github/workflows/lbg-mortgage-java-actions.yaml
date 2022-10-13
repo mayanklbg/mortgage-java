@@ -1,8 +1,5 @@
 name: PE SpringBoot Application
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs: 
       Name: 
@@ -56,9 +53,9 @@ jobs:
         kubectl annotate serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }}  iam.gke.io/gcp-service-account=shared-test-sa@shared-svc1-project.iam.gserviceaccount.com --insecure-skip-tls-verify
       continue-on-error: false
     - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Check on failures
-        if: steps.create_ns.outputs.status == 'failure' || steps.world.create_ksa.status == 'failure'
-        run: exit 1
+      env:
+        STEPS_CONTEXT: ${{ toJson(steps) }}
+      run: echo "$STEPS_CONTEXT"
+    - name: Check on failures
+      if: steps.create_ns.outputs.status == 'failure' || steps.world.create_ksa.status == 'failure'
+      run: exit 1
