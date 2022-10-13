@@ -25,7 +25,7 @@ jobs:
         curl -X POST \
         -H "Authorization: Bearer $(gcloud auth print-access-token)" \
         -H "Content-Type: application/json" \
-        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"shared-test"}}' \
+        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"shared-test-1"}}' \
         --insecure \
         "https://34.79.25.55/api/v1/namespaces"
 
