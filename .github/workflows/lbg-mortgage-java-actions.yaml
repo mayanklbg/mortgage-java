@@ -1,19 +1,8 @@
 name: Platform-Workspace
 on:
-  workflow_dispatch:
-    inputs: 
-      Name: 
-        required: true
-        type: string
-      CostCentre: 
-        required: true
-        type: string
-      CloudPlatform: 
-        required: true
-        type: string
-      AADGroupId: 
-        required: true
-        type: string
+   push:
+    branches:
+      - master
 env:
   name: Platform-Workspace
   GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
@@ -32,34 +21,13 @@ jobs:
       with:
         credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
     - uses: actions/checkout@v3
-    - name: Activate Service Account
-      run: |
-        gcloud config set account shared-k8s@shared-svc1-project.iam.gserviceaccount.com
-        gcloud auth activate-service-account shared-k8s@shared-svc1-project.iam.gserviceaccount.com --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
-
-    - name: Create Namespace
-      run: |
-        echo "${{ github.event.inputs.Name }}"
-        curl -X POST \
-        -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-        -H "Content-Type: application/json" \
-        -d '{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"${{github.event.inputs.Name}}"}}' \
-        --insecure \
-        "https://$CLUSTER_IP/api/v1/namespaces"
- 
-    - name: Create KSA
-      run: |
-        gcloud container clusters get-credentials pde-gke --zone=$ZONE
-        kubectl create serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }} --insecure-skip-tls-verify
-        gcloud projects add-iam-policy-binding $PROJECT_ID --member "serviceAccount:$USER_GKE_GSA" --role "roles/spanner.viewer"
-        kubectl annotate serviceaccount ksa-${{ github.event.inputs.Name }} --namespace ${{ github.event.inputs.Name }}  iam.gke.io/gcp-service-account=$USER_GKE_GSA --insecure-skip-tls-verify
-
-    # - name: Dump steps context
-    #   env:
-    #     STEPS_CONTEXT: ${{ toJson(steps) }}
-    #   run: echo "$STEPS_CONTEXT"
-    - name: Dump JSON response
-      if: steps.create_ns.outputs.status != 'failure' || steps.world.create_ksa.status != 'failure'
-      run: |
-        output=echo $(python3 python-scripts/handle-response.py "$CLUSTER_NAME" "${{ github.event.inputs.Name }}" "$ZONE" "$USER_GKE_GSA")
-        echo '::set-output name=output'
+   
+  build2:
+    runs-on: ubuntu-latest
+    steps:
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+    - uses: actions/checkout@v3
