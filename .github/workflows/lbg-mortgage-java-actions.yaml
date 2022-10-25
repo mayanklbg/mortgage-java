@@ -17,17 +17,16 @@ jobs:
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
-    - uses: actions/checkout@v3
-   
+      run: sleep 100s
+      
   build2:
     runs-on: ubuntu-latest
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      run: sleep 100s
-
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+    - uses: actions/checkout@v3
     
 
