@@ -19,14 +19,12 @@ jobs:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       run: sleep 20s
-      
-  build2:
-    runs-on: self-hosted
-    steps:
-    - id: 'auth'
+    - id: 'auth2'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
     - uses: actions/checkout@v3
+
+    
     
