@@ -3,61 +3,24 @@ on:
    push:
     branches:
       - master
-      
-env:
-  name: Platform-Workspace
-  GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
-  PROJECT_ID: "shared-svc1-project"
-  CLUSTER_NAME: "pde-gke"
-  ZONE: "europe-west1"
-  CLUSTER_IP: 35.189.222.183
-  USER_GKE_GSA: shared-test-sa@shared-svc1-project.iam.gserviceaccount.com
 jobs:
   build:
     runs-on: self-hosted
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      run: export 1
+      run: echo "hello"
+    - id: 'auth2'
+      name: 'Authenticate to Google Cloud'
+      run:  echo "hello"
+    - id: 'auth3'
+      name: 'Authenticate to Google Cloud'
+      run:  echo "hello"
+    - id: 'auth4'
+      name: 'Authenticate to Google Cloud'
+      run:  echo "hello"
+    - id: 'auth5'
+      name: 'Authenticate to Google Cloud'
+      run:  echo "hello"
       
-  build2:
-    runs-on: self-hosted
-    steps:
-    - id: 'auth2'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
-    - uses: actions/checkout@v3
-
-  build3:
-    runs-on: self-hosted
-    steps:
-    - id: 'auth2'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
-    - uses: actions/checkout@v3
-
-  build4:
-    runs-on: self-hosted
-    steps:
-    - id: 'auth2'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
-    - uses: actions/checkout@v3
-    
-  build5:
-    runs-on: self-hosted
-    steps:
-    - id: 'auth2'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
-    - uses: actions/checkout@v3
-    
     
