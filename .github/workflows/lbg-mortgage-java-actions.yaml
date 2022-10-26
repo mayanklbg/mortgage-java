@@ -3,6 +3,7 @@ on:
    push:
     branches:
       - master
+      
 env:
   name: Platform-Workspace
   GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GKE_SHARED_SECRET }}'
