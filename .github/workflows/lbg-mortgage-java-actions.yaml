@@ -17,7 +17,7 @@ jobs:
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      run: sleep 100s
+      run: sleep 20s
       
   build2:
     runs-on: self-hosted
