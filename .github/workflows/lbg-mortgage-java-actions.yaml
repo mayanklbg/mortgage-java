@@ -19,6 +19,10 @@ jobs:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       run: sleep 20s
+    
+  build2:
+    runs-on: self-hosted
+    steps:
     - id: 'auth2'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0'
