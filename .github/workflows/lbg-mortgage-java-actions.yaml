@@ -23,4 +23,3 @@ jobs:
       name: 'Authenticate to Google Cloud'
       run:  echo "hello"
       
-
