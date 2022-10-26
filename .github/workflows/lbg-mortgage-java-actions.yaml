@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: my-custom-runner-java
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
