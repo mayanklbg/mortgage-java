@@ -30,6 +30,33 @@ jobs:
         credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
     - uses: actions/checkout@v3
 
+  build3:
+    runs-on: my-custom-runner-deployment
+    steps:
+    - id: 'auth2'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+    - uses: actions/checkout@v3
 
+  build4:
+    runs-on: my-custom-runner-deployment
+    steps:
+    - id: 'auth2'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+    - uses: actions/checkout@v3
     
+  build5:
+    runs-on: my-custom-runner-deployment
+    steps:
+    - id: 'auth2'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
+    - uses: actions/checkout@v3
  
