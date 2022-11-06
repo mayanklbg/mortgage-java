@@ -14,14 +14,14 @@ env:
   USER_GKE_GSA: shared-test-sa@shared-svc1-project.iam.gserviceaccount.com
 jobs:
   build:
-    runs-on: my-custom-runner-java
+    runs-on: lbg-platform-runner
     steps:
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       run: sleep 20s
       
   build2:
-    runs-on: my-custom-runner-java
+    runs-on: lbg-platform-runner
     steps:
     - id: 'auth2'
       name: 'Authenticate to Google Cloud'
@@ -31,7 +31,7 @@ jobs:
     - uses: actions/checkout@v3
 
   build3:
-    runs-on: my-custom-runner-java
+    runs-on: lbg-platform-runner
     steps:
     - id: 'auth2'
       name: 'Authenticate to Google Cloud'
@@ -40,7 +40,7 @@ jobs:
         credentials_json: '${{ secrets.GKE_SHARED_SECRET }}'
     - uses: actions/checkout@v3
   build4:
-    runs-on: my-custom-runner-java
+    runs-on: lbg-platform-runner
     steps:
     - id: 'auth2'
       name: 'Authenticate to Google Cloud'
@@ -50,7 +50,7 @@ jobs:
     - uses: actions/checkout@v3
     
   build5:
-    runs-on: my-custom-runner-java
+    runs-on: lbg-platform-runner
     steps:
     - id: 'auth2'
       name: 'Authenticate to Google Cloud'
