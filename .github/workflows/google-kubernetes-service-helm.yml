@@ -4,7 +4,6 @@ name: Build and deploy an Helm
 on:
   push:
     branches: ["master"]
-  workflow_dispatch:
 
 jobs:
   buildImage:
@@ -38,7 +37,7 @@ jobs:
     steps:
       - name: Add helm repo
         run: |
-          helm repo ls add myhelmrepo https://mayanklbg.github.io/helm-repos
+          helm repo add myhelmrepo https://mayanklbg.github.io/helm-repos
       - name: Chek repo
         run: |
           helm repo ls
