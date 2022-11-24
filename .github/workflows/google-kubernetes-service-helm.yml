@@ -45,7 +45,8 @@ jobs:
       - name: Show GitHub context   
         env: 
           GITHUB_CONTEXT: ${{ toJson(github) }}   
-        run: echo ${{ github.actor }}
+        run: |
+          echo ${{ github.event.pusher.email }}
   
 
 
