@@ -1,5 +1,7 @@
 name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} is ${{ github.event.repository.updated_at}}
+concurrency: staging_environment
+
 on:
   workflow_dispatch:
 jobs:
